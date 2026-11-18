@@ -1,22 +1,14 @@
 # Spotify Music Analysis
 
-An exploratory data analysis project using Spotify track metadata and audio features. The goal is to understand how track popularity is distributed and explore how it may relate to genre and measurable audio characteristics.
+An exploratory data analysis project using Spotify track metadata and audio features. The objective is to describe patterns in popularity and audio characteristics across genres, and later investigate relationships among those features. This is a work in progress, not a finished analysis.
 
-## Why explore Spotify music data?
+## Dataset
 
-Spotify's dataset combines popularity scores, genre labels, and audio features for a large collection of tracks. Exploring these fields can help us ask data-driven questions about patterns in music without assuming that any single feature explains a track's success.
+The project uses the [Spotify Tracks Dataset on Kaggle](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset). It contains **114,000 rows and 21 columns**. Initial inspection found 1,000 tracks per genre.
 
-## Questions to investigate
+Download the CSV from Kaggle and place it locally at `data/dataset.csv`. The dataset is excluded from Git and is not included in this repository.
 
-- How is track popularity distributed across the dataset?
-- Does popularity vary across track genres?
-- Which audio features, such as danceability, energy, valence, or acousticness, appear related to popularity?
-- Do combinations of audio features show different patterns from individual features?
-- Are there meaningful differences between explicit and non-explicit tracks?
-
-These are investigation goals; they have not yet been answered by the current analysis.
-
-## Technology
+## Technologies
 
 - Python
 - Pandas and NumPy
@@ -24,35 +16,56 @@ These are investigation goals; they have not yet been answered by the current an
 - Jupyter Notebook
 - Visual Studio Code (VS Code)
 
-## Dataset
+## Investigations completed
 
-The project uses the [Spotify Tracks Dataset on Kaggle](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset). It contains **114,000 rows and 21 columns**.
+The exploratory notebook at [`notebooks/spotify_analysis.ipynb`](notebooks/spotify_analysis.ipynb) contains the analysis code, saved outputs, and visualisations.
 
-The dataset is not included in this repository. Download it from Kaggle and place the CSV at `data/dataset.csv` locally.
+### Initial dataset inspection
 
-### Initial data-quality checks
+- The dataset has 114,000 rows and 21 columns, with 1,000 tracks in each genre.
+- There is one missing value in each of `artists`, `album_name`, and `track_name`; all three are on the same row.
+- There are no exact duplicate rows.
+- `Unnamed: 0` has 114,000 unique values and appears to be a redundant original index column. Whether to remove it remains undecided.
 
-The initial notebook inspection found:
+These are data-quality checks, not a claim that the dataset has been fully cleaned. Decisions about missing values and the apparent index column are still outstanding.
 
-- One missing value in each of `artists`, `album_name`, and `track_name` (all three occur on the same row).
-- Zero exact duplicate rows.
-- `Unnamed: 0` has 114,000 unique values and appears to be an original row-index column.
-
-These are initial checks only; data cleaning and decisions about the index column are still pending.
-
-### Initial popularity summary
+### Popularity
 
 | Statistic | Value |
 | --- | ---: |
-| Mean | 33.238535 |
+| Mean | 33.24 |
 | Median | 35 |
-| Standard deviation | 22.305078 |
+| Standard deviation | 22.31 |
 | Minimum | 0 |
 | Maximum | 100 |
 
-### First visualisation
+There are **16,020 tracks (14.05%)** with a popularity score of zero. Jazz has the largest share of zero-score tracks (68.1%), followed by Iranian (65.6%) and Romance (63.6%).
 
-The notebook's first chart is a histogram of track popularity, shown with 20 bins and a KDE curve. It gives an initial view of scores across the 0–100 range: values are unevenly distributed, with many tracks in the lower-to-middle part of the scale and relatively few at the high end. This is a descriptive first look, not an explanation of what drives popularity.
+**Limitation:** a zero popularity score does not establish that a track has never been listened to, and this analysis does not explain why a score is zero. Popularity summaries and charts are descriptive; they do not establish what causes a track's score.
+
+### Average energy by genre
+
+The highest averages are Death metal (0.931), Grindcore (0.924), Metalcore (0.914), Happy (0.911), and Hardstyle (0.901). The lowest are Classical (0.190), New-age (0.215), Ambient (0.237), Romance (0.294), and Disney (0.303).
+
+Metal-related genres appear prominently among the highest-energy genres, while classical, ambient, and new-age appear among the lowest.
+
+### Average danceability by genre
+
+The highest averages are Kids (0.779), Chicago-house (0.766), Reggaeton (0.759), Latino (0.757), and Reggae (0.745). The lowest are Sleep (0.168), Grindcore (0.272), Black metal (0.296), Iranian (0.301), and Opera (0.314).
+
+Grindcore and black metal are among the highest-energy genres but among the lowest in danceability; death metal also combines high average energy with low average danceability. This illustrates that high energy does not necessarily mean high danceability in these genre averages.
+
+### Average acousticness by genre
+
+The highest averages are Classical (0.920), Romance (0.869), Tango (0.846), New-age (0.824), and Opera (0.795). The lowest are Death metal (0.007), Grindcore (0.009), Metalcore (0.010), Heavy metal (0.015), and Drum and bass (0.026).
+
+Classical, new-age, and ambient have high average acousticness, while several metal and electronic genres have very low average acousticness.
+
+## Limitations and project status
+
+The findings above describe averages and counts in this dataset; they do not demonstrate causation or explain why Spotify assigned a popularity score. Genre-level averages also do not describe every track in a genre. The dataset has been inspected for several data-quality issues, but cleaning decisions have not been completed.
+
+The project is ongoing. **Valence analysis and further relationship analysis are still outstanding**, including investigating relationships among popularity and audio features. Explicit versus non-explicit tracks have also not yet been compared.
 
 ## Setup
 
@@ -88,14 +101,3 @@ spotify-music-analysis/
 └── notebooks/
     └── spotify_analysis.ipynb      # Exploratory notebook
 ```
-
-## Progress and next steps
-
-The current notebook loads the dataset, inspects its dimensions and columns, checks missing values and exact duplicates, summarizes popularity, and displays the first popularity histogram. Deeper investigations and data-cleaning decisions are still pending.
-
-Planned next steps:
-
-1. Decide how to handle the three missing text fields and the apparent original index column.
-2. Explore popularity across genres and audio-feature ranges.
-3. Examine relationships among audio features and compare explicit/non-explicit tracks.
-4. Add clear visualisations and document findings as each investigation is completed.
