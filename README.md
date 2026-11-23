@@ -1,103 +1,114 @@
 # Spotify Music Analysis
 
-An exploratory data analysis project using Spotify track metadata and audio features. The objective is to describe patterns in popularity and audio characteristics across genres, and later investigate relationships among those features. This is a work in progress, not a finished analysis.
+An exploratory data analysis of Spotify track metadata and audio features. This project examines how popularity varies across tracks, how audio characteristics differ across genres, how audio features relate to one another, and whether popularity differs by audio features or explicit-content status.
+
+The analysis is descriptive and specific to the dataset used. It is not intended to establish causes or universal rules about music popularity.
+
+## Project objectives
+
+The notebook investigates:
+
+- How does popularity vary across tracks?
+- How do audio characteristics differ across genres?
+- How are audio features related to one another?
+- Are audio characteristics associated with popularity?
+- Do explicit and non-explicit tracks differ in popularity?
 
 ## Dataset
 
-The project uses the [Spotify Tracks Dataset on Kaggle](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset). It contains **114,000 rows and 21 columns**. Initial inspection found 1,000 tracks per genre.
+The analysis uses the [Spotify Tracks Dataset on Kaggle](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset). The downloaded dataset contains approximately **114,000 tracks**, **114 genres**, and **21 columns**. This copy has 1,000 tracks per genre.
 
-Download the CSV from Kaggle and place it locally at `data/dataset.csv`. The dataset is excluded from Git and is not included in this repository.
+The data includes track metadata, popularity, explicit-content status, genre, and audio features such as danceability, energy, acousticness, valence, tempo, and loudness. Initial inspection found one row with missing artist, album, and track names. The `Unnamed: 0` field appears to be an original row index.
+
+The dataset is not included in this repository. Download the CSV from Kaggle and place it at `data/dataset.csv`; that local file is excluded by `.gitignore`.
+
+## Key findings
+
+These results describe the dataset analyzed in the notebook and should not be generalized to all Spotify tracks.
+
+- **Popularity:** The mean score was 33.24 and the median was 35. A total of 16,020 tracks (14.05%) had a score of zero. Jazz had the largest proportion of zero-score tracks (68.1%), followed by Iranian (65.6%) and Romance (63.6%). A zero score does not establish that a track has never been listened to.
+- **Genre differences:** Death metal had the highest average energy (0.931), while classical had the lowest (0.190). Salsa had the highest average valence (0.815), while sleep had the lowest (0.058). The notebook also compares genre averages for danceability and acousticness.
+- **Relationships between audio features:** Energy and loudness had a positive Pearson correlation of about +0.76; energy and acousticness had a negative correlation of about -0.73. Danceability and valence were moderately positively correlated (+0.48), while energy and danceability had a weak positive correlation (+0.13).
+- **Audio features and popularity:** Each selected feature had a very weak linear correlation with popularity. Loudness had the strongest positive correlation (+0.050) and instrumentalness the strongest negative correlation (-0.095). This does not rule out non-linear or combined relationships.
+- **Explicit content:** Explicit tracks had a higher average popularity score (36.45) than non-explicit tracks (32.94); their medians were 37 and 34, respectively. The groups differed substantially in size: 9,747 explicit tracks and 104,253 non-explicit tracks. This comparison does not show that explicit content causes higher popularity.
+
+## Visualisations
+
+The executed notebook contains embedded charts, including the popularity distribution, genre-average comparisons, energy-versus-acousticness scatterplot, audio-feature correlation heatmap, popularity correlation chart, and explicit versus non-explicit popularity boxplot. There are no separate chart image files in the repository. Open the notebook to view the charts and their surrounding analysis.
 
 ## Technologies
 
 - Python
-- Pandas and NumPy
-- Matplotlib and Seaborn
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
 - Jupyter Notebook
-- Visual Studio Code (VS Code)
 
-## Investigations completed
-
-The exploratory notebook at [`notebooks/spotify_analysis.ipynb`](notebooks/spotify_analysis.ipynb) contains the analysis code, saved outputs, and visualisations.
-
-### Initial dataset inspection
-
-- The dataset has 114,000 rows and 21 columns, with 1,000 tracks in each genre.
-- There is one missing value in each of `artists`, `album_name`, and `track_name`; all three are on the same row.
-- There are no exact duplicate rows.
-- `Unnamed: 0` has 114,000 unique values and appears to be a redundant original index column. Whether to remove it remains undecided.
-
-These are data-quality checks, not a claim that the dataset has been fully cleaned. Decisions about missing values and the apparent index column are still outstanding.
-
-### Popularity
-
-| Statistic | Value |
-| --- | ---: |
-| Mean | 33.24 |
-| Median | 35 |
-| Standard deviation | 22.31 |
-| Minimum | 0 |
-| Maximum | 100 |
-
-There are **16,020 tracks (14.05%)** with a popularity score of zero. Jazz has the largest share of zero-score tracks (68.1%), followed by Iranian (65.6%) and Romance (63.6%).
-
-**Limitation:** a zero popularity score does not establish that a track has never been listened to, and this analysis does not explain why a score is zero. Popularity summaries and charts are descriptive; they do not establish what causes a track's score.
-
-### Average energy by genre
-
-The highest averages are Death metal (0.931), Grindcore (0.924), Metalcore (0.914), Happy (0.911), and Hardstyle (0.901). The lowest are Classical (0.190), New-age (0.215), Ambient (0.237), Romance (0.294), and Disney (0.303).
-
-Metal-related genres appear prominently among the highest-energy genres, while classical, ambient, and new-age appear among the lowest.
-
-### Average danceability by genre
-
-The highest averages are Kids (0.779), Chicago-house (0.766), Reggaeton (0.759), Latino (0.757), and Reggae (0.745). The lowest are Sleep (0.168), Grindcore (0.272), Black metal (0.296), Iranian (0.301), and Opera (0.314).
-
-Grindcore and black metal are among the highest-energy genres but among the lowest in danceability; death metal also combines high average energy with low average danceability. This illustrates that high energy does not necessarily mean high danceability in these genre averages.
-
-### Average acousticness by genre
-
-The highest averages are Classical (0.920), Romance (0.869), Tango (0.846), New-age (0.824), and Opera (0.795). The lowest are Death metal (0.007), Grindcore (0.009), Metalcore (0.010), Heavy metal (0.015), and Drum and bass (0.026).
-
-Classical, new-age, and ambient have high average acousticness, while several metal and electronic genres have very low average acousticness.
-
-## Limitations and project status
-
-The findings above describe averages and counts in this dataset; they do not demonstrate causation or explain why Spotify assigned a popularity score. Genre-level averages also do not describe every track in a genre. The dataset has been inspected for several data-quality issues, but cleaning decisions have not been completed.
-
-The project is ongoing. **Valence analysis and further relationship analysis are still outstanding**, including investigating relationships among popularity and audio features. Explicit versus non-explicit tracks have also not yet been compared.
-
-## Setup
-
-1. Install Python 3 and [Visual Studio Code](https://code.visualstudio.com/). In VS Code, install the Python and Jupyter extensions.
-2. Clone or open this project folder, then create and activate a virtual environment from the project root:
-
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   ```
-
-   On macOS or Linux, activate it with `source .venv/bin/activate`.
-3. Install the libraries used by the notebook:
-
-   ```powershell
-   python -m pip install pandas numpy matplotlib seaborn jupyter
-   ```
-
-4. Download the dataset as a CSV from Kaggle and save it as `data/dataset.csv`. The CSV is intentionally ignored by Git.
-5. Open `notebooks/spotify_analysis.ipynb` in VS Code, or start Jupyter from the `notebooks` directory so the notebook's existing `../data/dataset.csv` path resolves:
-
-   ```powershell
-   Set-Location notebooks
-   jupyter notebook spotify_analysis.ipynb
-   ```
-
-## Project layout
+## Repository structure
 
 ```text
 spotify-music-analysis/
-├── data/
-│   └── dataset.csv                 # Download locally; not tracked by Git
+├── .gitignore
+├── README.md
+├── requirements.txt
 └── notebooks/
-    └── spotify_analysis.ipynb      # Exploratory notebook
+    └── spotify_analysis.ipynb
 ```
+
+## Run the project
+
+1. Clone the repository and enter its folder:
+
+   ```bash
+   git clone https://github.com/DanielC34/spotify-data-analysis.git
+   cd spotify-data-analysis
+   ```
+
+2. Create and activate a virtual environment. In Windows PowerShell:
+
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+   On macOS or Linux:
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. Install the project dependencies:
+
+   ```bash
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
+   ```
+
+4. Download the dataset CSV from [Kaggle](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset) and save it as `data/dataset.csv`. The CSV is intentionally not tracked by Git.
+
+5. From the project root, launch Jupyter with the notebook directory as the working directory so the notebook's `../data/dataset.csv` path resolves:
+
+   ```bash
+   cd notebooks
+   jupyter notebook spotify_analysis.ipynb
+   ```
+
+   Alternatively, open `notebooks/spotify_analysis.ipynb` in VS Code, select the `.venv` Python kernel, and run all cells. Ensure the notebook's working directory is `notebooks/`.
+
+## Limitations
+
+- This dataset may not represent Spotify's entire catalogue, and it is a snapshot rather than a live view.
+- Popularity is a Spotify-specific score and should not be treated as a general measure of music quality or success on other platforms.
+- Pearson correlation measures linear association only; correlation does not establish causation.
+- Group averages do not control for other factors, such as genre or artist popularity, and the explicit/non-explicit groups are unequal in size.
+- One record is missing artist, album, and track names. The analysis is exploratory and does not apply a complete cleaning process.
+- Genre averages summarize groups and do not describe every track within a genre.
+
+## Future improvements
+
+- Explore possible non-linear relationships between audio features and popularity.
+- Compare explicit and non-explicit tracks while accounting for genre and artist popularity.
+- Document and apply a consistent strategy for missing metadata and the apparent index column.
+- Repeat the analysis with a newer or broader dataset to assess how stable these patterns are.
